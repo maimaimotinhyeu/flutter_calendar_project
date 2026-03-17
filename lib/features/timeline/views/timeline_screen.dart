@@ -3,15 +3,17 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../viewmodels/timeline_viewmodel.dart';
 import '../models/timeline_event_model.dart';
+import '../../van_khan/viewmodels/van_khan_viewmodel.dart';
+import '../../van_khan/views/van_khan_detail_screen.dart';
 
 class TimelineScreen extends StatefulWidget {
   final int initialYear;
   final String selectedTheme;
   const TimelineScreen({
-    Key? key,
+    super.key,
     required this.initialYear,
     required this.selectedTheme,
-  }) : super(key: key);
+  });
 
   @override
   State<TimelineScreen> createState() => _TimelineScreenState();
@@ -87,11 +89,11 @@ class _TimelineScreenState extends State<TimelineScreen> {
         ? Colors.grey.shade400
         : (isPassed ? Colors.white70 : const Color(0xFFFFD700));
     final Color lineColor = widget.selectedTheme == 'Tối'
-        ? Colors.grey.withOpacity(0.3)
+        ? Colors.grey.withValues(alpha: 0.3)
         : (isPassed
               ? Colors.white30
-              : const Color(0xFFFFD700).withOpacity(0.5));
-    final Color cardBackground = Colors.white.withOpacity(
+              : const Color(0xFFFFD700).withValues(alpha: 0.5));
+    final Color cardBackground = Colors.white.withValues(alpha: 
       isPassed ? 0.05 : 0.15,
     );
 
@@ -117,7 +119,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
               width: 40,
               child: Column(
                 children: [
-                  // Icon Node
+                   // Icon Node
                   Container(
                     width: 24,
                     height: 24,
@@ -156,70 +158,165 @@ class _TimelineScreenState extends State<TimelineScreen> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 24.0),
                 child: Container(
-                  padding: const EdgeInsets.all(16),
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: cardBackground,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: isCurrent
-                          ? const Color(0xFFFFD700).withOpacity(0.5)
-                          : Colors.white.withOpacity(0.1),
+                          ? const Color(0xFFFFD700).withValues(alpha: 0.5)
+                          : Colors.white.withValues(alpha: 0.1),
                       width: isCurrent ? 1.5 : 1,
                     ),
                   ),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                       // Gold Highlight strip for current event
+                      if (isCurrent)
+                        Container(
+                           width: 6,
+                           color: const Color(0xFFFFD700),
+                        ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              event.title,
-                              style: GoogleFonts.roboto(
-                                color: isPassed ? Colors.white70 : Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        // "SẮP DIỄN RA" Text if it's the current one
+                                        if (isCurrent)
+                                           Padding(
+                                             padding: const EdgeInsets.only(bottom: 4.0),
+                                             child: Text(
+                                               'SỰ KIỆN SẮP TỚI',
+                                               style: GoogleFonts.roboto(
+                                                 color: const Color(0xFFFFD700),
+                                                 fontSize: 9,
+                                                 fontWeight: FontWeight.w900,
+                                                 letterSpacing: 1.2,
+                                               ),
+                                             ),
+                                           )
+                                        else if (!isPassed)
+                                          Padding(
+                                             padding: const EdgeInsets.only(bottom: 4.0),
+                                             child: Text(
+                                               'SẮP DIỄN RA',
+                                               style: GoogleFonts.roboto(
+                                                 color: Colors.white54,
+                                                 fontSize: 9,
+                                                 fontWeight: FontWeight.w700,
+                                                 letterSpacing: 1.2,
+                                               ),
+                                             ),
+                                           ),
+                                        Text(
+                                          event.title,
+                                          style: GoogleFonts.roboto(
+                                            color: isPassed ? Colors.white70 : Colors.white,
+                                            fontSize: 20, // Slightly bigger
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          event.description,
+                                          style: GoogleFonts.roboto(
+                                            color: isPassed
+                                                ? Colors.white54
+                                                : Colors.white70,
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          event.solarDateText,
+                                          style: GoogleFonts.roboto(
+                                            color: isCurrent
+                                                ? const Color(0xFFFFD700)
+                                                : (isPassed ? Colors.white38 : const Color(0xFFFFD700).withValues(alpha: 0.7)),
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withValues(alpha: 0.1),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Text(
+                                      event.lunarDate,
+                                      style: GoogleFonts.roboto(
+                                        color: Colors.white70,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              event.description,
-                              style: GoogleFonts.roboto(
-                                color: isPassed
-                                    ? Colors.white54
-                                    : Colors.white70,
-                                fontSize: 12,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              event.solarDateText,
-                              style: GoogleFonts.roboto(
-                                color: isPassed
-                                    ? Colors.white38
-                                    : Colors.white60,
-                                fontSize: 10,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          event.lunarDate,
-                          style: GoogleFonts.roboto(
-                            color: Colors.white70,
-                            fontSize: 10,
+                              
+                              // Button "Xem văn khấn" if vanKhanId is present
+                              if (event.vanKhanId != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                         // Show the VanKhan detail screen
+                                         final vanKhanVM = Provider.of<VanKhanViewModel>(context, listen: false);
+                                         final vanKhan = vanKhanVM.getVanKhanById(event.vanKhanId!);
+                                         if(vanKhan != null) {
+                                            Navigator.push(context, MaterialPageRoute(
+                                              builder: (context) => VanKhanDetailScreen(vanKhan: vanKhan),
+                                            ));
+                                         }
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                        decoration: BoxDecoration(
+                                          color: isCurrent ? const Color(0xFFFFD700) : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(20),
+                                          border: isCurrent ? null : Border.all(
+                                            color: const Color(0xFFFFD700).withValues(alpha: 0.6),
+                                            width: 1,
+                                          ),
+                                          boxShadow: isCurrent ? [
+                                             BoxShadow(
+                                               color: const Color(0xFFFFD700).withValues(alpha: 0.3),
+                                               blurRadius: 10,
+                                               offset: const Offset(0, 2),
+                                             )
+                                          ] : null,
+                                        ),
+                                        child: Text(
+                                          'Xem văn khấn',
+                                          style: GoogleFonts.roboto(
+                                            color: isCurrent ? const Color(0xFF3B0B02) : const Color(0xFFFFD700),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                       ),
@@ -234,3 +331,4 @@ class _TimelineScreenState extends State<TimelineScreen> {
     );
   }
 }
+

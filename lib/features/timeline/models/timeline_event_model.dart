@@ -4,6 +4,7 @@ class TimelineEventModel {
   final DateTime solarDate;
   final String description;
   final String solarDateText; // pre-formatted like "Thứ Sáu, 13 tháng 2, 2026"
+  final String? vanKhanId; // Optional ID to link to a VanKhan
 
   TimelineEventModel({
     required this.title,
@@ -11,5 +12,6 @@ class TimelineEventModel {
     required this.solarDate,
     required this.description,
     required this.solarDateText,
+    this.vanKhanId,
   });
 }

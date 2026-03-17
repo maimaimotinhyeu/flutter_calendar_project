@@ -38,6 +38,7 @@ class TimelineViewModel extends ChangeNotifier {
         solarDate: tetDate.subtract(const Duration(days: 7)),
         description: 'Cúng Ông Táo về trời',
         solarDateText: _formatDate(tetDate.subtract(const Duration(days: 7))),
+        vanKhanId: 'ong-tao',
       ),
       TimelineEventModel(
         title: 'Giao Thừa',
@@ -47,13 +48,15 @@ class TimelineViewModel extends ChangeNotifier {
         ), // Midnight exactly is Tet, so 1 min before is Giao Thua eve
         description: 'Đêm Giao Thừa',
         solarDateText: _formatDate(tetDate.subtract(const Duration(days: 1))),
+        vanKhanId: 'giao-thua',
       ),
       TimelineEventModel(
         title: 'Mùng 1 Tết',
         lunarDate: '1/1 Âm lịch',
         solarDate: tetDate,
-        description: 'Mừng tuổi người lớn',
+        description: 'Ngày đầu tiên của năm mới',
         solarDateText: _formatDate(tetDate),
+        vanKhanId: 'mung-1',
       ),
       TimelineEventModel(
         title: 'Mùng 2 Tết',
@@ -70,11 +73,12 @@ class TimelineViewModel extends ChangeNotifier {
         solarDateText: _formatDate(tetDate.add(const Duration(days: 2))),
       ),
       TimelineEventModel(
-        title: 'Rằm Tháng Giêng',
-        lunarDate: '15/1 Âm lịch',
-        solarDate: tetDate.add(const Duration(days: 14)),
-        description: 'Tết Nguyên Tiêu',
-        solarDateText: _formatDate(tetDate.add(const Duration(days: 14))),
+        title: 'Lễ Khai Hạ',
+        lunarDate: '7/1 Âm lịch',
+        solarDate: tetDate.add(const Duration(days: 6)),
+        description: 'Lễ hóa vàng, kết thúc kỳ nghỉ Tết',
+        solarDateText: _formatDate(tetDate.add(const Duration(days: 6))),
+        vanKhanId: 'khai-ha',
       ),
     ];
   }

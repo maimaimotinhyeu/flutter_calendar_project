@@ -7,7 +7,7 @@ import '../../countdown/models/tet_date_model.dart';
 
 class CalendarScreen extends StatelessWidget {
   final int initialYear;
-  const CalendarScreen({Key? key, required this.initialYear}) : super(key: key);
+  const CalendarScreen({super.key, required this.initialYear});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CalendarScreen extends StatelessWidget {
 }
 
 class _CalendarView extends StatelessWidget {
-  const _CalendarView({Key? key}) : super(key: key);
+  const _CalendarView();
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +63,7 @@ class _CalendarView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withValues(alpha: 0.5),
                           blurRadius: 15,
                           offset: const Offset(0, 10),
                         ),

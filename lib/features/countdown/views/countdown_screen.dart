@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:confetti/confetti.dart';
-import 'package:home_widget/home_widget.dart';
 import 'dart:math' as math;
 import '../viewmodels/countdown_viewmodel.dart';
 import '../../timeline/views/timeline_screen.dart';
@@ -10,8 +9,10 @@ import '../../timeline/models/timeline_event_model.dart';
 import '../../timeline/viewmodels/timeline_viewmodel.dart';
 import '../../calendar/views/calendar_screen.dart';
 
+import '../../van_khan/viewmodels/van_khan_viewmodel.dart';
+
 class CountdownScreen extends StatefulWidget {
-  const CountdownScreen({Key? key}) : super(key: key);
+  const CountdownScreen({super.key});
 
   @override
   State<CountdownScreen> createState() => _CountdownScreenState();
@@ -53,8 +54,11 @@ class _CountdownScreenState extends State<CountdownScreen>
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => CountdownViewModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CountdownViewModel()),
+        ChangeNotifierProvider(create: (_) => VanKhanViewModel()),
+      ],
       child: Scaffold(
         extendBody: true,
         body: Container(
@@ -63,7 +67,7 @@ class _CountdownScreenState extends State<CountdownScreen>
               image: const AssetImage('assets/images/bg_do.png'),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(
+                Colors.black.withValues(alpha: 
                   0.5,
                 ), // Darken the background to make the glowing circle pop
                 BlendMode.darken,
@@ -195,8 +199,8 @@ class _CountdownScreenState extends State<CountdownScreen>
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            const Color(0xFFD4AF37).withOpacity(0.4), // Pale gold
-            const Color(0xFFD4AF37).withOpacity(0.0),
+            const Color(0xFFD4AF37).withValues(alpha: 0.4), // Pale gold
+            const Color(0xFFD4AF37).withValues(alpha: 0.0),
           ],
           center: Alignment.center,
           radius: 0.8,
@@ -221,9 +225,9 @@ class _CountdownScreenState extends State<CountdownScreen>
                   vertical: 6,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.05),
+                  color: Colors.white.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.white.withOpacity(0.1)),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<int>(
@@ -296,7 +300,7 @@ class _CountdownScreenState extends State<CountdownScreen>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.6),
+                      color: Colors.black.withValues(alpha: 0.6),
                       blurRadius: 30,
                       offset: const Offset(0, 10),
                     ),
@@ -409,7 +413,7 @@ class _CountdownScreenState extends State<CountdownScreen>
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
       height: 40,
       width: 1.5,
-      color: _goldDark.withOpacity(0.5),
+      color: _goldDark.withValues(alpha: 0.5),
     );
   }
 
@@ -433,7 +437,7 @@ class _CountdownScreenState extends State<CountdownScreen>
                 ? [
                     Shadow(
                       blurRadius: 15.0,
-                      color: valueColor.withOpacity(0.8),
+                      color: valueColor.withValues(alpha: 0.8),
                       offset: const Offset(0, 0),
                     ),
                   ]
@@ -444,7 +448,7 @@ class _CountdownScreenState extends State<CountdownScreen>
         Text(
           label,
           style: GoogleFonts.merriweather(
-            color: _goldLight.withOpacity(0.8),
+            color: _goldLight.withValues(alpha: 0.8),
             fontSize: 10,
             fontWeight: FontWeight.w700,
             letterSpacing: 1.5,
@@ -468,7 +472,7 @@ class _CountdownScreenState extends State<CountdownScreen>
             shadows: [
               Shadow(
                 blurRadius: 30.0,
-                color: _goldDark.withOpacity(0.8),
+                color: _goldDark.withValues(alpha: 0.8),
                 offset: const Offset(0, 0),
               ),
             ],
@@ -532,10 +536,10 @@ class _CountdownScreenState extends State<CountdownScreen>
             decoration: BoxDecoration(
               color: const Color(0xFF1F0703), // Very dark warm color
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(color: _goldDark.withOpacity(0.3), width: 1.5),
+              border: Border.all(color: _goldDark.withValues(alpha: 0.3), width: 1.5),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.4),
+                  color: Colors.black.withValues(alpha: 0.4),
                   blurRadius: 15,
                   offset: const Offset(0, 8),
                 ),
@@ -588,7 +592,7 @@ class _CountdownScreenState extends State<CountdownScreen>
                               Text(
                                 upcomingEvent.description,
                                 style: GoogleFonts.roboto(
-                                  color: Colors.white.withOpacity(0.7),
+                                  color: Colors.white.withValues(alpha: 0.7),
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -597,7 +601,7 @@ class _CountdownScreenState extends State<CountdownScreen>
                               Text(
                                 upcomingEvent.solarDateText,
                                 style: GoogleFonts.roboto(
-                                  color: _goldLight.withOpacity(0.9),
+                                  color: _goldLight.withValues(alpha: 0.9),
                                   fontSize: 14,
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -619,7 +623,7 @@ class _CountdownScreenState extends State<CountdownScreen>
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                  color: _goldLight.withOpacity(0.3),
+                                  color: _goldLight.withValues(alpha: 0.3),
                                   blurRadius: 10,
                                   offset: const Offset(0, 2),
                                 ),
@@ -654,7 +658,7 @@ class _CountdownScreenState extends State<CountdownScreen>
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.6),
+            color: Colors.black.withValues(alpha: 0.6),
             blurRadius: 20,
             offset: const Offset(0, -4),
           ),
@@ -711,10 +715,10 @@ class _CountdownScreenState extends State<CountdownScreen>
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.05),
+            color: Colors.white.withValues(alpha: 0.05),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: Colors.white.withOpacity(0.5), size: 20),
+          child: Icon(icon, color: Colors.white.withValues(alpha: 0.5), size: 20),
         ),
       );
     }
@@ -729,7 +733,7 @@ class _CountdownScreenState extends State<CountdownScreen>
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: _goldLight.withOpacity(0.3),
+                color: _goldLight.withValues(alpha: 0.3),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -760,12 +764,12 @@ class _CountdownScreenState extends State<CountdownScreen>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: Colors.white.withOpacity(0.4), size: 22),
+          Icon(icon, color: Colors.white.withValues(alpha: 0.4), size: 22),
           const SizedBox(height: 4),
           Text(
             label,
             style: GoogleFonts.merriweather(
-              color: Colors.white.withOpacity(0.4),
+              color: Colors.white.withValues(alpha: 0.4),
               fontSize: 9,
               fontWeight: FontWeight.w700,
               letterSpacing: 0.5,
@@ -789,13 +793,13 @@ class _ConcentricRingsPainter extends CustomPainter {
 
     // Inner glowing solid ring
     Paint innerRing = Paint()
-      ..color = color.withOpacity(0.8)
+      ..color = color.withValues(alpha: 0.8)
       ..strokeWidth = 2.0
       ..style = PaintingStyle.stroke;
 
     // Outer thin solid ring
     Paint outerRing = Paint()
-      ..color = color.withOpacity(0.4)
+      ..color = color.withValues(alpha: 0.4)
       ..strokeWidth = 1.0
       ..style = PaintingStyle.stroke;
 
@@ -852,7 +856,7 @@ class _GoldDustPainter extends CustomPainter {
 
     for (var p in particles) {
       double currentY = (p.y + (animation.value * p.speed)) % 1.0;
-      paint.color = const Color(0xFFFFD700).withOpacity(p.opacity);
+      paint.color = const Color(0xFFFFD700).withValues(alpha: p.opacity);
       canvas.drawCircle(
         Offset(p.x * size.width, currentY * size.height),
         p.radius,
