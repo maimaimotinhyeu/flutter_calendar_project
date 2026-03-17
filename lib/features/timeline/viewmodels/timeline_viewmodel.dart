@@ -80,6 +80,14 @@ class TimelineViewModel extends ChangeNotifier {
         solarDateText: _formatDate(tetDate.add(const Duration(days: 6))),
         vanKhanId: 'khai-ha',
       ),
+      TimelineEventModel(
+        title: 'Tết Nguyên Tiêu',
+        lunarDate: '15/1 Âm lịch',
+        solarDate: tetDate.add(const Duration(days: 14)),
+        description: 'Rằm tháng Giêng',
+        solarDateText: _formatDate(tetDate.add(const Duration(days: 14))),
+        vanKhanId: 'nguyen-tieu',
+      ),
     ];
   }
 

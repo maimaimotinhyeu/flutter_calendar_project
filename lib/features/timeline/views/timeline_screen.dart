@@ -270,6 +270,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                                 ],
                               ),
                               
+
                               // Button "Xem văn khấn" if vanKhanId is present
                               if (event.vanKhanId != null)
                                 Padding(
